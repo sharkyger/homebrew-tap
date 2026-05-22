@@ -1,13 +1,15 @@
-name: brew test-bot
+name: tap tests
 
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
   test-bot:
+    name: brew test-bot (macos)
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
@@ -26,8 +28,42 @@ jobs:
         run: brew test-bot --only-setup
       - name: brew test-bot --only-tap-syntax
         run: brew test-bot --only-tap-syntax
-      - name: brew audit safe-fetch
-        # New-formula audit is the most useful gate here; we don't have
-        # the tag tarball during PR yet, so skip --new-formula-strict
-        # in favor of the standard audit + tap-syntax.
-        run: brew audit --strict --tap sharkyger/tap safe-fetch || true
+
+  install-smoke:
+    # End-to-end: tap → install --HEAD → run installer in tmpdir → uninstall.
+    # Uses --HEAD so the smoke works before the v1.0.0 tag exists; once the
+    # tag ships, brew install (no --HEAD) is what real users run.
+    name: install smoke (macos, --HEAD)
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: tap
+      - name: Set up Homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+      - name: Tap from local checkout
+        run: brew tap sharkyger/tap "$(pwd)/tap"
+      - name: brew install --HEAD safe-fetch
+        run: brew install --HEAD safe-fetch
+      - name: safe-fetch --version
+        run: safe-fetch --version
+      - name: Install hooks into tmp target
+        run: |
+          mkdir -p /tmp/smoke-claude
+          safe-fetch --install-claude-hooks --install-target /tmp/smoke-claude
+          test -f /tmp/smoke-claude/hooks/injection-gate-bash.sh
+          test -f /tmp/smoke-claude/commands/save-memory.md
+          test -f /tmp/smoke-claude/CLAUDE.md
+          test -f /tmp/smoke-claude/settings.json
+          grep -q "safe-fetch:hook-snippet:begin" /tmp/smoke-claude/CLAUDE.md
+      - name: Idempotency
+        run: |
+          safe-fetch --install-claude-hooks --install-target /tmp/smoke-claude
+          # All actions on second run must be 'skip'
+          out=$(safe-fetch --install-claude-hooks --install-target /tmp/smoke-claude)
+          echo "$out" | grep -v "skip" && (echo "non-skip action on re-install"; exit 1) || true
+      - name: Uninstall
+        run: |
+          safe-fetch --uninstall-claude-hooks --install-target /tmp/smoke-claude
+          test ! -f /tmp/smoke-claude/hooks/injection-gate-bash.sh
+          test ! -f /tmp/smoke-claude/commands/save-memory.md
