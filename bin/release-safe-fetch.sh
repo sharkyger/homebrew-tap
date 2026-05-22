@@ -23,17 +23,17 @@ FORMULA="$(cd "$(dirname "$0")/.." && pwd)/Formula/safe-fetch.rb"
 
 echo "Downloading ${TARBALL_URL}"
 TMP=$(mktemp -d)
-trap 'rm -rf "$TMP"' EXIT
+trap 'rm -rf "${TMP}"' EXIT
 
-curl -fsSL "$TARBALL_URL" -o "$TMP/safe-fetch.tar.gz"
-SHA=$(shasum -a 256 "$TMP/safe-fetch.tar.gz" | awk '{print $1}')
-echo "sha256: $SHA"
+curl -fsSL "${TARBALL_URL}" -o "${TMP}/safe-fetch.tar.gz"
+SHA=$(shasum -a 256 "${TMP}/safe-fetch.tar.gz" | awk '{print $1}')
+echo "sha256: ${SHA}"
 
 # Update url + sha256 in the formula.
 sed -i.bak -E \
   -e "s|^  url \".*\"$|  url \"${TARBALL_URL}\"|" \
   -e "s|^  sha256 \".*\"$|  sha256 \"${SHA}\"|" \
-  "$FORMULA"
+  "${FORMULA}"
 rm -f "${FORMULA}.bak"
 
 echo "Updated ${FORMULA} for ${TAG}"
