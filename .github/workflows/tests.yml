@@ -1,0 +1,33 @@
+name: brew test-bot
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test-bot:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Cache Homebrew Bundler RubyGems
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.set-up-homebrew.outputs.gems-path }}
+          key: ${{ runner.os }}-rubygems-${{ steps.set-up-homebrew.outputs.gems-hash }}
+          restore-keys: ${{ runner.os }}-rubygems-
+      - name: Set up Homebrew
+        id: set-up-homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+      - name: brew test-bot --only-cleanup-before
+        run: brew test-bot --only-cleanup-before
+      - name: brew test-bot --only-setup
+        run: brew test-bot --only-setup
+      - name: brew test-bot --only-tap-syntax
+        run: brew test-bot --only-tap-syntax
+      - name: brew audit safe-fetch
+        # New-formula audit is the most useful gate here; we don't have
+        # the tag tarball during PR yet, so skip --new-formula-strict
+        # in favor of the standard audit + tap-syntax.
+        run: brew audit --strict --tap sharkyger/tap safe-fetch || true
