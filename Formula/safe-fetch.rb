@@ -3,8 +3,8 @@ class SafeFetch < Formula
 
   desc "Docker-isolated URL fetcher + Layer-2 prompt-injection sanitizer"
   homepage "https://github.com/sharkyger/safe-fetch"
-  url "https://github.com/sharkyger/safe-fetch/archive/refs/tags/v0.1.2.tar.gz"
-  sha256 "02826106e91b2684f6abbcfe9dc705e51da9934e7861576e6b4b65d7c3fb2d98"
+  url "https://github.com/sharkyger/safe-fetch/archive/refs/tags/v0.2.0.tar.gz"
+  sha256 "2d80dfa4fed0d604c18fc9e228a36481d16850383b6ec0545e57e95690a13ff5"
   license "MIT"
   head "https://github.com/sharkyger/safe-fetch.git", branch: "main"
 
