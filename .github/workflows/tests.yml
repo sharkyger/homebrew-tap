@@ -66,3 +66,56 @@ jobs:
           safe-fetch --uninstall-claude-hooks --install-target /tmp/smoke-claude
           test ! -f /tmp/smoke-claude/hooks/injection-gate-bash.sh
           test ! -f /tmp/smoke-claude/commands/save-memory.md
+
+  install-smoke-linux:
+    # Catches Linuxbrew-specific build issues. v0.1.3 was specifically
+    # opened to fix lxml install on Linuxbrew (sdist build segfaulted on
+    # current toolchain); without this Linux job that bug shipped to
+    # users silently because the macOS smoke didn't hit it.
+    name: install smoke (linux, --HEAD)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+      - name: Tap sharkyger/tap from GitHub
+        run: brew tap sharkyger/tap https://github.com/sharkyger/homebrew-tap
+      - name: brew install --HEAD safe-fetch
+        run: brew install --HEAD safe-fetch
+      - name: safe-fetch --version
+        run: safe-fetch --version
+      - name: Install hooks into tmp target (exercises lxml + bs4 load)
+        run: |
+          mkdir -p /tmp/smoke-claude
+          safe-fetch --install-claude-hooks --install-target /tmp/smoke-claude
+          test -f /tmp/smoke-claude/hooks/injection-gate-bash.sh
+          test -f /tmp/smoke-claude/commands/save-memory.md
+          test -f /tmp/smoke-claude/CLAUDE.md
+      - name: Uninstall
+        run: |
+          safe-fetch --uninstall-claude-hooks --install-target /tmp/smoke-claude
+          test ! -f /tmp/smoke-claude/hooks/injection-gate-bash.sh
+
+  install-from-tag:
+    # Exercises the FORMULA's tagged url + sha256 + resources path,
+    # not --HEAD. --HEAD bypasses the resource pins; this job is the
+    # one that catches "wheel URL went stale" / "lxml resource broken"
+    # bugs that --HEAD silently dodges. Runs on both macOS + Linux.
+    name: install from tag (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+      - name: Tap sharkyger/tap from GitHub
+        run: brew tap sharkyger/tap https://github.com/sharkyger/homebrew-tap
+      - name: brew install --build-from-source safe-fetch (from formula tag)
+        run: brew install --build-from-source sharkyger/tap/safe-fetch
+      - name: safe-fetch --version
+        run: safe-fetch --version
+      - name: brew test safe-fetch
+        run: brew test sharkyger/tap/safe-fetch
