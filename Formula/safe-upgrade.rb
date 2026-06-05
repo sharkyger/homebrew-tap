@@ -1,8 +1,8 @@
 class SafeUpgrade < Formula
   desc "Fail-closed CVE gate for brew install/upgrade (NVD, OSV, GitHub Advisory)"
   homepage "https://github.com/sharkyger/homebrew-safe-upgrade"
-  url "https://github.com/sharkyger/homebrew-safe-upgrade/archive/refs/tags/v0.2.0.tar.gz"
-  sha256 "7c4c5cb0307ec012bdf988322ead19006275499641e863840ed1a5339f54ce62"
+  url "https://github.com/sharkyger/homebrew-safe-upgrade/archive/refs/tags/v0.2.1.tar.gz"
+  sha256 "c1dd9a36e860f78b5cb288e534fa1f011d4d1716145ce31bd08b029f5288d3c9"
   license "MIT"
   head "https://github.com/sharkyger/homebrew-safe-upgrade.git", branch: "main"
 
@@ -47,6 +47,9 @@ class SafeUpgrade < Formula
       is meant for the curl|bash install path, not the brew-managed tree.)
 
       Full docs: https://github.com/sharkyger/homebrew-safe-upgrade
+
+      If this tool saves you from a bad upgrade, consider sponsoring:
+        https://github.com/sponsors/sharkyger
     EOS
   end
 
