@@ -1,8 +1,8 @@
 class SafeUpgrade < Formula
   desc "Fail-closed CVE gate for brew install/upgrade (NVD, OSV, GitHub Advisory)"
   homepage "https://github.com/sharkyger/homebrew-safe-upgrade"
-  url "https://github.com/sharkyger/homebrew-safe-upgrade/archive/refs/tags/v0.2.1.tar.gz"
-  sha256 "c1dd9a36e860f78b5cb288e534fa1f011d4d1716145ce31bd08b029f5288d3c9"
+  url "https://github.com/sharkyger/homebrew-safe-upgrade/archive/refs/tags/v0.2.2.tar.gz"
+  sha256 "48dee8b1a331ace983cbb8d999bfe633e05ba03d2d6357ea87991ddbdd9ec4fc"
   license "MIT"
   head "https://github.com/sharkyger/homebrew-safe-upgrade.git", branch: "main"
 
@@ -12,13 +12,14 @@ class SafeUpgrade < Formula
   depends_on "python@3.12"
 
   def install
-    # All six files MUST stay co-located: each brew-safe-* script resolves its
-    # Python helpers via dirname "${BASH_SOURCE[0]}" WITHOUT readlink, and the
+    # All runtime files MUST stay co-located: each brew-safe-* script resolves its
+    # Python helpers relative to its own (symlink-resolved) directory, and the
     # fail-closed guard aborts if bottle_resolver.py / dependency_security_check.py
-    # are not siblings. Shipping fewer than all six trips that guard (the drift
-    # that bit install.sh, fixed upstream in #46).
+    # are not siblings. Shipping fewer trips that guard (the drift that bit
+    # install.sh, fixed upstream in #46). VERSION feeds `--version` self-diagnosis.
     libexec.install "brew-safe-upgrade", "brew-safe-install", "brew-safe-update",
-                    "dependency_security_check.py", "bottle_resolver.py", "cask_nvd_map.py"
+                    "dependency_security_check.py", "bottle_resolver.py", "cask_nvd_map.py",
+                    "VERSION"
 
     # Expose the brew-safe-* scripts as `brew safe-upgrade` / `safe-install` /
     # `safe-update` external subcommands. A plain bin symlink would make
@@ -67,5 +68,12 @@ class SafeUpgrade < Formula
       "BREW_SAFE_BOTTLE_RESOLVER=/nonexistent #{bin}/brew-safe-upgrade 2>&1", 2
     )
     assert_match "bottle SHA resolver not found", output
+
+    # Real self-diagnosis, NO override: proves VERSION ships and the helpers
+    # resolve in the actual formula/libexec layout (the script route that an
+    # earlier override-based test couldn't see).
+    version_out = shell_output("#{bin}/brew-safe-upgrade --version")
+    assert_match version.to_s, version_out
+    assert_match "helpers: all present", version_out
   end
 end
