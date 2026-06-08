@@ -1,0 +1,25 @@
+version: 2
+
+# A Homebrew tap is Ruby formulae + GitHub Actions workflows — there is no
+# Python / npm / docker dependency surface to track, so github-actions is the
+# only ecosystem here. Grouped weekly PRs keep the noise down; the
+# freshness-hold + CVE-scan discipline still applies before any bump merges.
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "07:00"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "github-actions"
+    reviewers:
+      - "sharkyger"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    groups:
+      github-actions:
+        patterns: ["*"]

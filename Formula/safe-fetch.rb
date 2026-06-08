@@ -108,6 +108,8 @@ class SafeFetch < Formula
         safe-fetch --install-claude-hooks
 
       Full docs: https://github.com/sharkyger/safe-fetch
+
+      💚 Sponsor: https://github.com/sponsors/sharkyger
     EOS
   end
 

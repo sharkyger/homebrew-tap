@@ -49,8 +49,7 @@ class SafeUpgrade < Formula
 
       Full docs: https://github.com/sharkyger/homebrew-safe-upgrade
 
-      If this tool saves you from a bad upgrade, consider sponsoring:
-        https://github.com/sponsors/sharkyger
+      💚 Sponsor: https://github.com/sponsors/sharkyger
     EOS
   end
 
