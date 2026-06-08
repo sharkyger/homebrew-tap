@@ -7,6 +7,24 @@ on:
     branches: [main]
   workflow_dispatch:
 
+# Disable Homebrew's Linux build sandbox in CI.
+#
+# Homebrew now mandates a bubblewrap-based sandbox for `--build-from-source`
+# / `--HEAD` builds on Linux. GitHub's `ubuntu-latest` (24.04) ships with
+# `kernel.apparmor_restrict_unprivileged_userns=1`, which blocks rootless
+# `bwrap` from creating a user namespace, so every Linux build of safe-fetch
+# fails with "Bubblewrap is required to use the Linux sandbox but was not
+# found." (macOS uses sandbox-exec and is unaffected.)
+#
+# This var is the workaround Homebrew's own error message recommends. It
+# only touches the build-time sandbox in the ephemeral CI runner — it does
+# not affect what users install. The `_LINUX` suffix makes it a no-op on the
+# macOS jobs, so a single top-level env cleanly targets only the Linux legs.
+# Verified locally: a clean container build needs no workaround; this is
+# specific to AppArmor-locked hosts like the runner.
+env:
+  HOMEBREW_NO_SANDBOX_LINUX: 1
+
 jobs:
   test-bot:
     name: brew test-bot (macos)
