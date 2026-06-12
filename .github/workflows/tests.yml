@@ -24,6 +24,10 @@ on:
 # specific to AppArmor-locked hosts like the runner.
 env:
   HOMEBREW_NO_SANDBOX_LINUX: 1
+  # TEMP DIAGNOSTIC (remove before merge): surface the swallowed build.rb
+  # stderr on the macos-latest runner, which fails --build-from-source even
+  # though real Macs build the same formula fine.
+  HOMEBREW_VERBOSE: 1
 
 jobs:
   test-bot:
