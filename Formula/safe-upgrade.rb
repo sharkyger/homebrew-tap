@@ -1,8 +1,8 @@
 class SafeUpgrade < Formula
   desc "Fail-closed CVE gate for brew install/upgrade (NVD, OSV, GitHub Advisory)"
   homepage "https://github.com/sharkyger/homebrew-safe-upgrade"
-  url "https://github.com/sharkyger/homebrew-safe-upgrade/archive/refs/tags/v0.2.6.tar.gz"
-  sha256 "9b6ee5e45bdecdd983d7e638f44161b9c71ea9fd6e6c4e992ae8f7c85be636b9"
+  url "https://github.com/sharkyger/homebrew-safe-upgrade/archive/refs/tags/v0.2.7.tar.gz"
+  sha256 "198b3792eda958c073678db455c1e83a5ebb7adf7e27e998fa69c3dd535fa62d"
   license "MIT"
   head "https://github.com/sharkyger/homebrew-safe-upgrade.git", branch: "main"
 
@@ -44,8 +44,8 @@ class SafeUpgrade < Formula
 
       Update via Homebrew, not the bundled self-updater:
         brew update && brew upgrade safe-upgrade
-      (`brew safe-update` re-downloads into its install dir from GitHub main and
-      is meant for the curl|bash install path, not the brew-managed tree.)
+      (`brew safe-update` fetches the latest release tag, SHA-verified, into a
+      script install's bin — it is for the curl|bash path, not this brew tree.)
 
       Full docs: https://github.com/sharkyger/homebrew-safe-upgrade
 
