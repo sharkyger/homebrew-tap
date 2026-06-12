@@ -25,6 +25,8 @@ authoritative version of each tool is the `version`/`url` pinned in its formula.
   checked, so a non-installing formula could have shipped unnoticed.
 - `.gitignore`: local fleet session notes (`/CLAUDE.md`) are now ignored,
   matching the convention in the tool repos.
+- README tagline + GitHub repo description reframed for public use (the
+  previous "Personal Homebrew tap" wording read as maintainer-only).
 
 ## [2026.06.12]
 

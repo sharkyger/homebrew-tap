@@ -1,6 +1,10 @@
 # sharkyger/homebrew-tap
 
-Personal Homebrew tap for security tooling.
+Security-first developer tools for everyone, one `brew install` away:
+fail-closed CVE gates that check every package against NIST NVD, OSV.dev,
+and the GitHub Advisory Database **before** it installs, and a sandboxed
+fetcher for untrusted web content. If you `brew`, `pip`, or feed web pages
+to an AI agent, these tools are for you.
 
 ## Formulas
 
@@ -37,9 +41,11 @@ brew safe-upgrade
 
 `brew install sharkyger/tap/safe-fetch` is the standard way to ship a
 brew formula without going through the `homebrew-core` review pipeline.
-This tap is the umbrella for sharky's security CLIs — `safe-fetch`,
+This tap is the home of the sharkyger security CLIs — `safe-fetch`,
 `pip-cve-gate`, and `safe-upgrade` today, with future security tools
-alongside as they ship.
+alongside as they ship. It is built for public use: every formula is
+pinned to a tagged, checksum-verified release, and issues and PRs are
+welcome in each tool's upstream repo.
 
 The `safe-upgrade` formula installs the brew-wrapper CLIs
 (`brew safe-install` / `brew safe-upgrade` / `brew safe-update`) that gate every
