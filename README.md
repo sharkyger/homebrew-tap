@@ -29,6 +29,10 @@ brew safe-install <formula>  # safe-upgrade
 brew safe-upgrade
 ```
 
+> Tap releases are dated snapshots for changelog/provenance only. `brew`
+> always installs from `main`; the authoritative version of each tool is the
+> `version`/`url` pinned in its formula.
+
 ## Why a tap?
 
 `brew install sharkyger/tap/safe-fetch` is the standard way to ship a

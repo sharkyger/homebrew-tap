@@ -1,8 +1,8 @@
 class SafeUpgrade < Formula
   desc "Fail-closed CVE gate for brew install/upgrade (NVD, OSV, GitHub Advisory)"
   homepage "https://github.com/sharkyger/homebrew-safe-upgrade"
-  url "https://github.com/sharkyger/homebrew-safe-upgrade/archive/refs/tags/v0.2.5.tar.gz"
-  sha256 "ccfb1d6f0fe238e6d11c1e5f013fd5507b995302a9d196f0add02b51f62dba29"
+  url "https://github.com/sharkyger/homebrew-safe-upgrade/archive/refs/tags/v0.2.6.tar.gz"
+  sha256 "9b6ee5e45bdecdd983d7e638f44161b9c71ea9fd6e6c4e992ae8f7c85be636b9"
   license "MIT"
   head "https://github.com/sharkyger/homebrew-safe-upgrade.git", branch: "main"
 
