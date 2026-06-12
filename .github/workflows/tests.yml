@@ -24,6 +24,16 @@ on:
 # specific to AppArmor-locked hosts like the runner.
 env:
   HOMEBREW_NO_SANDBOX_LINUX: 1
+  # macos-latest rolled out a runner image (post-2026-06-10) whose
+  # sandbox-exec profile breaks Homebrew's `--build-from-source` / `--HEAD`
+  # build step: `sandbox-exec -f …/homebrew.sb … build.rb … exited with 1`,
+  # failing both macOS jobs on UNCHANGED formulae (e.g. safe-fetch v0.3.0).
+  # This is the macOS analogue of the Linux bwrap breakage documented above
+  # (fixed in #13). HOMEBREW_NO_SANDBOX disables the build sandbox on all
+  # platforms — a superset of the _LINUX var (kept above for history). Like
+  # that var, it only touches the build-time sandbox in the ephemeral CI
+  # runner; it does not affect what users install.
+  HOMEBREW_NO_SANDBOX: 1
 
 jobs:
   test-bot:
