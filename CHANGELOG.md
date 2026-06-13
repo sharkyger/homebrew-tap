@@ -7,6 +7,27 @@ Tap "versions" are **dated snapshots** ([CalVer](https://calver.org/) `YYYY.MM.D
 for changelog/provenance only — `brew` always installs from `main`; the
 authoritative version of each tool is the `version`/`url` pinned in its formula.
 
+## [2026.06.13]
+
+### Changed
+
+- `safe-upgrade` 0.2.6 → **0.2.7** — bump `url`/`sha256` to the upstream
+  [v0.2.7 release](https://github.com/sharkyger/homebrew-safe-upgrade/releases/tag/v0.2.7)
+  (ecosystem-aware NVD CPE matching, package-anchored output, CVE-named age
+  bypass; closes upstream #72–#75). Caveats corrected: the bundled
+  self-updater has fetched pinned, SHA-verified release tags — not `main` —
+  since upstream 0.2.5.
+
+### Added
+
+- CI: the `install-from-tag` job now also installs and `brew test`s
+  **safe-upgrade** on macOS + Linux — previously only its tap syntax was
+  checked, so a non-installing formula could have shipped unnoticed.
+- `.gitignore`: local fleet session notes (`/CLAUDE.md`) are now ignored,
+  matching the convention in the tool repos.
+- README tagline + GitHub repo description reframed for public use (the
+  previous "Personal Homebrew tap" wording read as maintainer-only).
+
 ## [2026.06.12]
 
 Bootstrap of tap-level versioning. This snapshot records the formula versions
@@ -27,4 +48,5 @@ shipped on `main` as of this date.
 
 - `CHANGELOG.md` (this file) and a tap-versioning clarifier in `README.md`.
 
+[2026.06.13]: https://github.com/sharkyger/homebrew-tap/releases/tag/2026.06.13
 [2026.06.12]: https://github.com/sharkyger/homebrew-tap/releases/tag/2026.06.12

@@ -137,3 +137,13 @@ jobs:
         run: safe-fetch --version
       - name: brew test safe-fetch
         run: brew test sharkyger/tap/safe-fetch
+      # safe-upgrade was previously never installed in tap CI — only its
+      # syntax was checked. A formula that doesn't install (stale url/sha256,
+      # broken libexec layout) would have shipped silently. Same lesson as
+      # the upstream "formula self-test masked the script-route strand" bug.
+      - name: brew install safe-upgrade (from formula tag)
+        run: brew install sharkyger/tap/safe-upgrade
+      - name: brew safe-upgrade --version
+        run: brew safe-upgrade --version
+      - name: brew test safe-upgrade
+        run: brew test sharkyger/tap/safe-upgrade
