@@ -7,6 +7,22 @@ Tap "versions" are **dated snapshots** ([CalVer](https://calver.org/) `YYYY.MM.D
 for changelog/provenance only — `brew` always installs from `main`; the
 authoritative version of each tool is the `version`/`url` pinned in its formula.
 
+## [2026.06.21]
+
+### Changed
+
+- `pip-cve-gate` 0.2.1 → **0.3.0** — bump `url`/`sha256` to the upstream PyPI
+  sdist for the [v0.3.0 release](https://github.com/sharkyger/pip-cve-gate/releases/tag/v0.3.0)
+  (CVE engine swapped to `osv-scanner`; gate flipped fail-open → fail-closed).
+
+### Added
+
+- `pip-cve-gate` formula now declares **`depends_on "osv-scanner"`** — v0.3.0
+  delegates CVE lookup to the external engine, so a `url`/`sha256`-only bump
+  would have shipped a broken install (the gate fails closed without it).
+- Caveats note the engine dependency and the new
+  `PIP_CVE_GATE_OSV_SCANNER_BIN` / `_TIMEOUT` environment variables.
+
 ## [2026.06.13]
 
 ### Changed
@@ -48,5 +64,6 @@ shipped on `main` as of this date.
 
 - `CHANGELOG.md` (this file) and a tap-versioning clarifier in `README.md`.
 
+[2026.06.21]: https://github.com/sharkyger/homebrew-tap/releases/tag/2026.06.21
 [2026.06.13]: https://github.com/sharkyger/homebrew-tap/releases/tag/2026.06.13
 [2026.06.12]: https://github.com/sharkyger/homebrew-tap/releases/tag/2026.06.12
