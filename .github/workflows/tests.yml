@@ -30,7 +30,7 @@ jobs:
     name: brew test-bot (macos)
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Set up Homebrew
         id: set-up-homebrew
         uses: Homebrew/actions/setup-homebrew@main
@@ -54,7 +54,7 @@ jobs:
     name: install smoke (macos, --HEAD)
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Set up Homebrew
         uses: Homebrew/actions/setup-homebrew@main
       - name: Tap sharkyger/tap from GitHub
@@ -93,7 +93,7 @@ jobs:
     name: install smoke (linux, --HEAD)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Set up Homebrew
         uses: Homebrew/actions/setup-homebrew@main
       - name: Tap sharkyger/tap from GitHub
@@ -126,7 +126,7 @@ jobs:
         os: [macos-latest, ubuntu-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Set up Homebrew
         uses: Homebrew/actions/setup-homebrew@main
       - name: Tap sharkyger/tap from GitHub
