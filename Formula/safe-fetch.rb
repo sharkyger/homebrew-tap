@@ -90,7 +90,7 @@ class SafeFetch < Formula
     # The venv is created --without-pip (brew default), so there's no
     # pip binary in libexec/bin. Invoke pip via the system Python's
     # pip module, targeting the venv's python via --python.
-    python = Formula["python@3.12"].opt_bin/"python3.12"
+    python = formula_opt_bin("python@3.12")/"python3.12"
     system python, "-m", "pip", "--python=#{libexec}/bin/python",
            "install", "--no-deps", buildpath/wheel_name.to_s
     venv.pip_install_and_link buildpath

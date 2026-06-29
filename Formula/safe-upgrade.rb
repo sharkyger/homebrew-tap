@@ -26,7 +26,7 @@ class SafeUpgrade < Formula
     # BASH_SOURCE resolve to bin/ (no readlink) and break helper lookup, so use
     # write_env_script: it execs the real libexec copy, keeping BASH_SOURCE in
     # libexec, and prepends python@3.12's unversioned bin so `python3` resolves.
-    python_bin = Formula["python@3.12"].opt_libexec/"bin"
+    python_bin = formula_opt_libexec("python@3.12")/"bin"
     %w[brew-safe-upgrade brew-safe-install brew-safe-update].each do |cmd|
       (bin/cmd).write_env_script libexec/cmd, PATH: "#{python_bin}:$PATH"
     end
