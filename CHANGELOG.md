@@ -7,6 +7,32 @@ Tap "versions" are **dated snapshots** ([CalVer](https://calver.org/) `YYYY.MM.D
 for changelog/provenance only — `brew` always installs from `main`; the
 authoritative version of each tool is the `version`/`url` pinned in its formula.
 
+## [2026.06.29]
+
+### Changed
+
+- `safe-upgrade` 0.2.7 → **0.2.8** — bump `url`/`sha256` to the upstream
+  [v0.2.8 release](https://github.com/sharkyger/homebrew-safe-upgrade/releases/tag/v0.2.8)
+  (authenticated GitHub API + rate-limit handling for the package age check;
+  closes upstream #84). Anon 60 req/hr → token-backed 5000 req/hr; a
+  rate-limited response is now a distinct verdict (stops with the reset time
+  instead of silently holding every package). Honors `GH_TOKEN` →
+  `GITHUB_TOKEN` → `gh auth token`; `--allow-unknown-age` also covers the
+  rate-limited case.
+- `pip-cve-gate` 0.3.0 → **0.3.1** — bump `url`/`sha256` to the upstream PyPI
+  sdist for the [v0.3.1 release](https://github.com/sharkyger/pip-cve-gate/releases/tag/v0.3.1).
+  Restores `safe-pip install` on machines with `osv-scanner` ≥ 2.x:
+  v2's `--all-packages` now resolves transitive deps from the lockfile, so
+  v0.3.0's exact-count integrity check fail-closed on every install. v0.3.1
+  flips to a subset check + PEP 503 canonicalises both sides, so mixed-case
+  specs like `Flask-Login` no longer fail-close on the case mismatch. Also
+  hardens `_parse` against malformed nested JSON shapes (CodeRabbit finding).
+  Resources unchanged.
+- Tap-wide style fix: adopt `formula_opt_bin(...)` / `formula_opt_libexec(...)`
+  in `safe-fetch.rb` and `safe-upgrade.rb` for the new Homebrew
+  `Homebrew/FormulaPathMethods` cop (was failing `brew test-bot
+  --only-tap-syntax` tap-wide; not a behavioural change).
+
 ## [2026.06.21]
 
 ### Changed
@@ -64,6 +90,7 @@ shipped on `main` as of this date.
 
 - `CHANGELOG.md` (this file) and a tap-versioning clarifier in `README.md`.
 
+[2026.06.29]: https://github.com/sharkyger/homebrew-tap/releases/tag/2026.06.29
 [2026.06.21]: https://github.com/sharkyger/homebrew-tap/releases/tag/2026.06.21
 [2026.06.13]: https://github.com/sharkyger/homebrew-tap/releases/tag/2026.06.13
 [2026.06.12]: https://github.com/sharkyger/homebrew-tap/releases/tag/2026.06.12
