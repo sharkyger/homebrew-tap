@@ -1,8 +1,8 @@
 class SafeUpgrade < Formula
   desc "Fail-closed CVE gate for brew install/upgrade (NVD, OSV, GitHub Advisory)"
   homepage "https://github.com/sharkyger/homebrew-safe-upgrade"
-  url "https://github.com/sharkyger/homebrew-safe-upgrade/archive/refs/tags/v0.3.2.tar.gz"
-  sha256 "92871ad2cf7390f42e054bc927bd756706beb85dddfd4cf2d49a38c5b058cfb4"
+  url "https://github.com/sharkyger/homebrew-safe-upgrade/archive/refs/tags/v0.3.3.tar.gz"
+  sha256 "b90957bbaed49767e025981e89d3df315e64f3b7d15957582ba516ef6d757126"
   license "MIT"
   head "https://github.com/sharkyger/homebrew-safe-upgrade.git", branch: "main"
 
@@ -19,7 +19,7 @@ class SafeUpgrade < Formula
     # install.sh, fixed upstream in #46). VERSION feeds `--version` self-diagnosis.
     libexec.install "brew-safe-upgrade", "brew-safe-install", "brew-safe-update",
                     "dependency_security_check.py", "bottle_resolver.py", "cask_nvd_map.py",
-                    "VERSION"
+                    "formula_cpe_map.py", "VERSION"
 
     # Expose the brew-safe-* scripts as `brew safe-upgrade` / `safe-install` /
     # `safe-update` external subcommands. A plain bin symlink would make
@@ -60,6 +60,7 @@ class SafeUpgrade < Formula
     # fail-closed guard depends on).
     assert_path_exists libexec/"bottle_resolver.py"
     assert_path_exists libexec/"cask_nvd_map.py"
+    assert_path_exists libexec/"formula_cpe_map.py"
     assert_path_exists libexec/"dependency_security_check.py"
 
     # Fail-closed guard: with the bottle-SHA resolver pointed at a missing path,
